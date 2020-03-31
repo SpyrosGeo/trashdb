@@ -13,7 +13,15 @@ const fetchData = async (searchTerm) => {
     }
     return (response.data.Search)
 }
-
+const onMovieSelect = async (movieId) =>{
+    const res = await axios.get("http://www.omdbapi.com/",{
+        params:{
+            apikey:KEY,
+            i:movieId
+        }
+    })
+    console.log(res.data)
+}
 const root = document.querySelector('.autocomplete');
 
 root.innerHTML = `
@@ -46,18 +54,21 @@ const onInput = async e => {
         dropdown.classList.add('is-active')
         for (let i in movies) {
             let movie = movies[i]
+            //create an anchor for every movie 
             const option = document.createElement('a');
             const imgSrc = movie.Poster ==='N/A'?'':movie.Poster
-            
             option.classList.add('dropdown-item')
             option.innerHTML = `
             <img src="${imgSrc}"/>
             ${movie.Title}
             `;
-
-            option.addEventListener('click',()=>{
+            //replace input value text with the selected movie Title
+            option.addEventListener('click',async()=>{
+                //close the dropdown
                 dropdown.classList.remove('is-active')
                 input.value = movie.Title
+                const details = await onMovieSelect(movie.imdbID)
+                
             })
             resultsWrapper.appendChild(option)
         }
