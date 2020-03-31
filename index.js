@@ -7,7 +7,7 @@ const fetchData = async (searchTerm) => {
             s: searchTerm
         }
     });
-    console.log(response.data)
+    return (response.data.Search)
 }
 
 
@@ -15,9 +15,20 @@ const fetchData = async (searchTerm) => {
 
 
 
-const onInput = e => {
-    if(e.target.value){
-        fetchData(e.target.value)
+const onInput = async e => {
+    if (e.target.value) {
+        const movies = await fetchData(e.target.value)
+        for(let i in movies){
+            let movie = movies[i]
+            console.log(movie.Poster)
+            const div = document.createElement('div');
+            div.innerHTML = `
+            <img src="${movie.Poster}"/>
+            <h1>${movie.Title}</h1>
+            `;
+            document.querySelector("#target").appendChild(div)
+        }
+
     }
 }
-input.addEventListener('input', debounce(onInput,500));
+input.addEventListener('input', debounce(onInput, 500));
