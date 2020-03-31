@@ -13,7 +13,7 @@ const fetchData = async (searchTerm) => {
 
 
 //debounce 
-const debounce = (func) => {
+const debounce = (func,delay) => {
     let timeoutId;
     return (...args) => {
         if (timeoutId) {
@@ -21,14 +21,14 @@ const debounce = (func) => {
         }
         timeoutId = setTimeout(() => {
             func(...args)
-        }, 1000)
+        }, delay)
     }
 }
 
 
-const onInput = debounce(e => {
+const onInput = e => {
     if(e.target.value){
         fetchData(e.target.value)
     }
-})
-input.addEventListener('input', onInput);
+}
+input.addEventListener('input', debounce(onInput,500));
