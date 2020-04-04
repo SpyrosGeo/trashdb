@@ -84,8 +84,15 @@ document.addEventListener('click', e => {
 })
 
 
+
+
+
+
+
+
 const movieTemplate = movieDetail => {
-    const {Poster,Title,Genre,Plot} = movieDetail
+    console.log(movieDetail)
+    const {Poster,Title,Genre,Plot,Awards,BoxOffice,imdbRating,imdbVotes} = movieDetail
     return `
     <article class="media">
       <figure class="media-left">
@@ -100,6 +107,22 @@ const movieTemplate = movieDetail => {
         <p>${Plot}</p>
       </div>
       </div>
+    </article>
+    <article class="notification is-warning">
+    <p class="title">${Awards}</p>
+    <p class="subtitle">Awards</p>
+    </article>
+    <article class="notification is-warning">
+    <p class="title">${BoxOffice}</p>
+    <p class="subtitle">Box Office</p>
+    </article>
+    <article class="notification is-warning">
+    <p class="title">${imdbRating}</p>
+    <p class="subtitle">IMDB Rating</p>
+    </article>
+    <article class="notification is-warning">
+    <p class="title">${imdbVotes}</p>
+    <p class="subtitle">IMDB Votes</p>
     </article>
     `
 }
