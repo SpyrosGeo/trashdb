@@ -2,7 +2,7 @@ const KEY = "41101192";
 
 
 const fetchData = async (searchTerm) => {
-    const response = await axios.get("http://www.omdbapi.com/", {
+    const response = await axios.get("https://www.omdbapi.com/", {
         params: {
             apikey: KEY,
             s: searchTerm
@@ -14,7 +14,7 @@ const fetchData = async (searchTerm) => {
     return (response.data.Search)
 }
 const onMovieSelect = async (movieId) => {
-    const res = await axios.get("http://www.omdbapi.com/", {
+    const res = await axios.get("https://www.omdbapi.com/", {
         params: {
             apikey: KEY,
             i: movieId
