@@ -1,18 +1,6 @@
 const KEY = "41101192";
 
 
-const fetchData = async (searchTerm) => {
-    const response = await axios.get("https://www.omdbapi.com/", {
-        params: {
-            apikey: KEY,
-            s: searchTerm
-        }
-    });
-    if (response.data.Error) {
-        return [];
-    }
-    return (response.data.Search)
-}
 const onMovieSelect = async (movieId) => {
     const res = await axios.get("https://www.omdbapi.com/", {
         params: {
@@ -36,8 +24,23 @@ createAutoComplete({
             `;
     },
     onOptionSelect: async(movie)=>{
-        const details = await onMovieSelect(movie)
+        const details = await onMovieSelect(movie.imdbID)
         document.querySelector('#summary').innerHTML = movieTemplate(details)
+    },
+    inputValue(movie){
+        return movie.Title;
+    },
+    fetchData: async (searchTerm) => {
+        const response = await axios.get("https://www.omdbapi.com/", {
+            params: {
+                apikey: KEY,
+                s: searchTerm
+            }
+        });
+        if (response.data.Error) {
+            return [];
+        }
+        return (response.data.Search)
     }
    
 })
@@ -68,7 +71,7 @@ const movieTemplate = movieDetail => {
     <p class="subtitle">Awards</p>
     </article>
     <article class="notification is-warning">
-    <p class="title">${BoxOffice}</p>
+    <p class="title">${BoxOffice ?BoxOffice:'N/A'}</p>
     <p class="subtitle">Box Office</p>
     </article>
     <article class="notification is-warning">
