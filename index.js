@@ -20,11 +20,7 @@ const autoCompleteConfig= {
             ${movie.Title} (${movie.Year})
             `;
     },
-    onOptionSelect: async (movie) => {
-        document.querySelector('.tutorial').classList.add('is-hidden')
-        const details = await onMovieSelect(movie.imdbID)
-        document.querySelector('#summary').innerHTML = movieTemplate(details)
-    },
+   
     inputValue(movie) {
         return movie.Title;
     },
@@ -45,11 +41,21 @@ const autoCompleteConfig= {
 createAutoComplete({
     ...autoCompleteConfig,
     root: document.querySelector('#left-autocomplete'),
+    onOptionSelect: async (movie) => {
+        document.querySelector('.tutorial').classList.add('is-hidden')
+        const details = await onMovieSelect(movie.imdbID)
+        document.querySelector('#left-summary').innerHTML = movieTemplate(details)
+    },
     
 })
 createAutoComplete({
     ...autoCompleteConfig,
     root: document.querySelector('#right-autocomplete'),
+    onOptionSelect: async (movie) => {
+        document.querySelector('.tutorial').classList.add('is-hidden')
+        const details = await onMovieSelect(movie.imdbID)
+        document.querySelector('#right-summary').innerHTML = movieTemplate(details)
+    },
     
 })
 
@@ -58,7 +64,8 @@ createAutoComplete({
 
 const movieTemplate = movieDetail => {
     console.log(movieDetail)
-    const {Poster,Title,Genre,Plot,Awards,BoxOffice,imdbRating,imdbVotes} = movieDetail
+    const {Poster,Title,Genre,Plot,Awards,BoxOffice,imdbRating,imdbVotes,Ratings} = movieDetail
+    const {Value,Source}= Ratings[1]
     return `
     <article class="media">
       <figure class="media-left">
@@ -79,8 +86,8 @@ const movieTemplate = movieDetail => {
     <p class="subtitle">Awards</p>
     </article>
     <article class="notification is-warning">
-    <p class="title">${BoxOffice ?BoxOffice:'N/A'}</p>
-    <p class="subtitle">Box Office</p>
+    <p class="title">${Value}</p>
+    <p class="subtitle">${Source}</p>
     </article>
     <article class="notification is-warning">
     <p class="title">${imdbRating}</p>
