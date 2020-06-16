@@ -1,16 +1,6 @@
 const KEY = "41101192";
 
 
-const onMovieSelect = async (movieId) => {
-    const res = await axios.get("https://www.omdbapi.com/", {
-        params: {
-            apikey: KEY,
-            i: movieId
-        }
-    })
-    return res.data
-}
-
 
 const autoCompleteConfig= {
     renderOption: (movie) => {
@@ -43,7 +33,7 @@ createAutoComplete({
     root: document.querySelector('#left-autocomplete'),
     onOptionSelect: async (movie) => {
         document.querySelector('.tutorial').classList.add('is-hidden')
-        const details = await onMovieSelect(movie.imdbID)
+        const details = await onMovieSelect(movie.imdbID,'left')
         document.querySelector('#left-summary').innerHTML = movieTemplate(details)
     },
     
@@ -53,19 +43,58 @@ createAutoComplete({
     root: document.querySelector('#right-autocomplete'),
     onOptionSelect: async (movie) => {
         document.querySelector('.tutorial').classList.add('is-hidden')
-        const details = await onMovieSelect(movie.imdbID)
+        const details = await onMovieSelect(movie.imdbID,'right')
         document.querySelector('#right-summary').innerHTML = movieTemplate(details)
+        console.log(details)
     },
     
 })
 
+let leftMovie;
+let rightMovie;
 
+const onMovieSelect = async (movieId,side) => {
+    const res = await axios.get("https://www.omdbapi.com/", {
+        params: {
+            apikey: KEY,
+            i: movieId
+        }
+    })
+    //check if two movies are on screen to begin comparison
+    if(side==='left'){
+        leftMovie =res.data;
 
+    }else{
+        rightMovie = res.data;
+    }
 
+    if(leftMovie && rightMovie){
+        runComparison()
+    }
+
+    return res.data
+}
+
+const runComparison =( )=>{
+    console.log('Time for comparison')
+
+}
+
+let rottenScore='N/A'
 const movieTemplate = movieDetail => {
     console.log(movieDetail)
+    
     const {Poster,Title,Genre,Plot,Awards,BoxOffice,imdbRating,imdbVotes,Ratings} = movieDetail
-    const {Value,Source}= Ratings[1]
+    const {Value} = Ratings[1] || "N/A"
+    if(Value==undefined){
+        rottenScore ="N/A"
+        console.log(Value)
+    }else{
+        rottenScore = Value
+        
+    }
+    
+    
     return `
     <article class="media">
       <figure class="media-left">
@@ -86,8 +115,8 @@ const movieTemplate = movieDetail => {
     <p class="subtitle">Awards</p>
     </article>
     <article class="notification is-warning">
-    <p class="title">${Value}</p>
-    <p class="subtitle">${Source}</p>
+    <p class="title">${rottenScore}</p>
+    <p class="subtitle">Rotten Tomatos</p>
     </article>
     <article class="notification is-warning">
     <p class="title">${imdbRating}</p>
