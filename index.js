@@ -15,7 +15,7 @@ const onMovieSelect = async (movieId) => {
 
 
 createAutoComplete({
-    root: document.querySelector('.autocomplete'),
+    root: document.querySelector('#left-autocomplete'),
     renderOption: (movie) =>{
         const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
         return `
