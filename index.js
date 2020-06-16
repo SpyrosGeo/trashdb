@@ -21,6 +21,7 @@ const autoCompleteConfig= {
             `;
     },
     onOptionSelect: async (movie) => {
+        document.querySelector('.tutorial').classList.add('is-hidden')
         const details = await onMovieSelect(movie.imdbID)
         document.querySelector('#summary').innerHTML = movieTemplate(details)
     },
