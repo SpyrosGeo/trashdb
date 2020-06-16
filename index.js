@@ -28,18 +28,17 @@ const onMovieSelect = async (movieId) => {
 
 createAutoComplete({
     root: document.querySelector('.autocomplete'),
+    renderOption: (movie) =>{
+        const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
+        return `
+            <img src="${imgSrc}"/>
+            ${movie.Title}
+            `
+
+    },
    
 })
 
-createAutoComplete({
-    root: document.querySelector('.autocomplete-two'),
-   
-})
-
-createAutoComplete({
-    root: document.querySelector('.autocomplete-three'),
-   
-})
 
 
 
