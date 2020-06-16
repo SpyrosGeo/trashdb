@@ -12,22 +12,19 @@ const onMovieSelect = async (movieId) => {
 }
 
 
-
-
-createAutoComplete({
-    root: document.querySelector('#left-autocomplete'),
-    renderOption: (movie) =>{
+const autoCompleteConfig= {
+    renderOption: (movie) => {
         const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
         return `
             <img src="${imgSrc}"/>
             ${movie.Title} (${movie.Year})
             `;
     },
-    onOptionSelect: async(movie)=>{
+    onOptionSelect: async (movie) => {
         const details = await onMovieSelect(movie.imdbID)
         document.querySelector('#summary').innerHTML = movieTemplate(details)
     },
-    inputValue(movie){
+    inputValue(movie) {
         return movie.Title;
     },
     fetchData: async (searchTerm) => {
@@ -42,7 +39,17 @@ createAutoComplete({
         }
         return (response.data.Search)
     }
-   
+}
+
+createAutoComplete({
+    ...autoCompleteConfig,
+    root: document.querySelector('#left-autocomplete'),
+    
+})
+createAutoComplete({
+    ...autoCompleteConfig,
+    root: document.querySelector('#right-autocomplete'),
+    
 })
 
 
